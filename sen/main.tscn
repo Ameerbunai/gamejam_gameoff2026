@@ -1,3 +1,52 @@
 [gd_scene format=3 uid="uid://b0kclb3oq0j4r"]
 
+[ext_resource type="Script" uid="uid://clk1j5ygae23x" path="res://scripts/main.gd" id="1_5turn"]
+[ext_resource type="PackedScene" uid="uid://nk40a2wnyb5h" path="res://sen/player.tscn" id="1_w2i8b"]
+[ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="2_mueu3"]
+[ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="4_gw2b2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
+size = Vector3(11.186584, 0.23144531, 10.019775)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_w2i8b"]
+points = PackedVector3Array(-5.593292, -0.115722656, -5.0098877, -5.593292, 0.11572267, -5.0098877, 5.5921974, -0.115722656, -5.0098877, -5.593292, -0.115722656, 5.0089073, -5.593292, 0.11572267, 5.0089073, 5.5921974, 0.11572267, -5.0098877, 5.5921974, -0.115722656, 5.0089073, 5.5921974, 0.11572267, 5.0089073)
+
+[sub_resource type="Environment" id="Environment_02vh1"]
+
 [node name="main" type="Node3D" unique_id=921653221]
+script = ExtResource("1_5turn")
+
+[node name="floor" type="Node3D" parent="." unique_id=1301555787]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor" unique_id=1362041772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47891235, -0.38427734, -0.33654785)
+mesh = SubResource("BoxMesh_02vh1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor/MeshInstance3D" unique_id=77527702]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/MeshInstance3D/StaticBody3D" unique_id=741183492]
+shape = SubResource("ConvexPolygonShape3D_w2i8b")
+
+[node name="env" type="Node3D" parent="." unique_id=1269484846]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=1541715152]
+environment = SubResource("Environment_02vh1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env" unique_id=1258627584]
+transform = Transform3D(0.69741595, 0.012368477, 0.7165599, -0.7166665, 0.0120362425, 0.69731206, 0, -0.99985105, 0.01725834, 7.18555, 6.1955733, 0)
+
+[node name="player" parent="." unique_id=1760399875 instance=ExtResource("1_w2i8b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="da portal" parent="." unique_id=2055683923 instance=ExtResource("2_mueu3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5353565, -0.064347625, 0)
+
+[node name="ageis" parent="." unique_id=312730686 instance=ExtResource("4_gw2b2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3568757, 0.66758275, 0)
+
+[connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]
+
+[editable path="player"]
+[editable path="da portal"]
+[editable path="ageis"]

@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://d2qfarorw72xh"]
+
+[ext_resource type="Script" uid="uid://doep8gwfpl3jr" path="res://scripts/da_past_button.gd" id="1_mhajt"]
+[ext_resource type="Script" uid="uid://dn8ou4nl4knan" path="res://scripts/da_futur.gd" id="2_uqmm7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
+size = Vector3(1, 0.29638672, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_iir4b"]
+points = PackedVector3Array(-0.5, -0.14819336, -0.5, -0.5, 0.14819336, -0.5, 0.5, -0.14819336, -0.5, -0.5, -0.14819336, 0.5, -0.5, 0.14819336, 0.5, 0.5, 0.14819336, -0.5, 0.5, -0.14819336, 0.5, 0.5, 0.14819336, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_02vh1"]
+size = Vector3(1, 1.4233398, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yi60d"]
+size = Vector3(0.32641602, 0.171875, 0.19140625)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iir4b"]
+size = Vector3(0.38427734, 0.23138428, 0.1933899)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xoqgj"]
+size = Vector3(0.32510376, 0.16638184, 0.22363281)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ptrl1"]
+size = Vector3(0.40170288, 0.18841553, 0.24316406)
+
+[node name="da portal" type="Node3D" unique_id=2055683923]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1353024173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.031045914, 0)
+mesh = SubResource("BoxMesh_02vh1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=2088998546]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1818370086]
+shape = SubResource("ConvexPolygonShape3D_iir4b")
+
+[node name="da coll" type="Node3D" parent="." unique_id=1499537103]
+
+[node name="Area3D" type="Area3D" parent="da coll" unique_id=40823207]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="da coll/Area3D" unique_id=1635193560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.83716744, 0)
+shape = SubResource("BoxShape3D_02vh1")
+
+[node name="da buttons" type="Node3D" parent="." unique_id=1207597205]
+
+[node name="PastButton" type="StaticBody3D" parent="da buttons" unique_id=1133986444]
+script = ExtResource("1_mhajt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="da buttons/PastButton" unique_id=1744286300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5986552, 0.66158795, 0.632259)
+mesh = SubResource("BoxMesh_yi60d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="da buttons/PastButton" unique_id=1977348699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5937574, 0.6554109, 0.6269505)
+shape = SubResource("BoxShape3D_iir4b")
+
+[node name="FutureButton" type="StaticBody3D" parent="da buttons" unique_id=576464318]
+script = ExtResource("2_uqmm7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="da buttons/FutureButton" unique_id=953773419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6969327, 0.63968444, 0.6441003)
+mesh = SubResource("BoxMesh_xoqgj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="da buttons/FutureButton" unique_id=393255414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.69165355, 0.6485794, 0.64990574)
+shape = SubResource("BoxShape3D_ptrl1")
