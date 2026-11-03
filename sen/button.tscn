@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://h4b0qy5c5av6"]
+
+[ext_resource type="Script" uid="uid://by5va6qtpxqo3" path="res://sen/massbutton.gd" id="1_t17s8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xoqgj"]
+size = Vector3(1, 0.1342926, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ptrl1"]
+albedo_color = Color(0.55788344, 0.011217967, 0.13506642, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
+material = SubResource("StandardMaterial3D_ptrl1")
+size = Vector3(1, 0.2890625, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yi60d"]
+size = Vector3(1.8259277, 0.18359375, 1.7893066)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t2526"]
+points = PackedVector3Array(-0.91296387, -0.091796875, -0.8946533, -0.91296387, 0.091796875, -0.8946533, 0.91296375, -0.091796875, -0.8946533, -0.91296387, -0.091796875, 0.8946533, -0.91296387, 0.091796875, 0.8946533, 0.91296375, 0.091796875, -0.8946533, 0.91296375, -0.091796875, 0.8946533, 0.91296375, 0.091796875, 0.8946533)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yi60d"]
+size = Vector3(1, 0.37597656, 1)
+
+[node name="button" type="Node3D" unique_id=673357798]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1310338567]
+script = ExtResource("1_t17s8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=16897189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017982453, 0)
+shape = SubResource("BoxShape3D_xoqgj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=847362712]
+mesh = SubResource("BoxMesh_02vh1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="StaticBody3D" unique_id=2119903903]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12126166, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D/StaticBody3D" unique_id=1885497154]
+mesh = SubResource("BoxMesh_yi60d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/StaticBody3D" unique_id=1131473454]
+shape = SubResource("ConvexPolygonShape3D_t2526")
+
+[node name="DetectionArea" type="Area3D" parent="StaticBody3D" unique_id=2145841377]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/DetectionArea" unique_id=2065383545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15673828, 0)
+shape = SubResource("BoxShape3D_yi60d")
+
+[connection signal="body_entered" from="StaticBody3D/DetectionArea" to="StaticBody3D" method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="StaticBody3D/DetectionArea" to="StaticBody3D" method="_on_detection_area_body_exited"]

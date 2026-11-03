@@ -24,6 +24,11 @@ Global="*uid://d1xf06awlx4ke"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[global_group]
+
+player=""
+time_cube=""
+
 [input]
 
 move_forward={

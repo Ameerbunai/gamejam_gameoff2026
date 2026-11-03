@@ -4,12 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://nk40a2wnyb5h" path="res://sen/player.tscn" id="1_w2i8b"]
 [ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="2_mueu3"]
 [ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="4_gw2b2"]
+[ext_resource type="PackedScene" uid="uid://h4b0qy5c5av6" path="res://sen/button.tscn" id="5_k0edm"]
+[ext_resource type="PackedScene" uid="uid://cy64c4vf2aesf" path="res://sen/animatable_body_3d.tscn" id="6_8t2hn"]
+[ext_resource type="PackedScene" uid="uid://bg1puronb8gbe" path="res://jumpingbad.tscn" id="7_7r7d7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
-size = Vector3(11.186584, 0.23144531, 10.019775)
+size = Vector3(31, 0.23144531, 33)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_w2i8b"]
-points = PackedVector3Array(-5.593292, -0.115722656, -5.0098877, -5.593292, 0.11572267, -5.0098877, 5.5921974, -0.115722656, -5.0098877, -5.593292, -0.115722656, 5.0089073, -5.593292, 0.11572267, 5.0089073, 5.5921974, 0.11572267, -5.0098877, 5.5921974, -0.115722656, 5.0089073, 5.5921974, 0.11572267, 5.0089073)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_66w7o"]
+points = PackedVector3Array(15.5, 0.11572267, 16.5, 15.5, -0.115722656, 16.5, 15.5, 0.11572267, -16.5, -15.5, 0.11572267, 16.5, -15.5, -0.115722656, 16.5, 15.5, -0.115722656, -16.5, -15.5, 0.11572267, -16.5, -15.5, -0.115722656, -16.5)
 
 [sub_resource type="Environment" id="Environment_02vh1"]
 
@@ -22,10 +25,10 @@ script = ExtResource("1_5turn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47891235, -0.38427734, -0.33654785)
 mesh = SubResource("BoxMesh_02vh1")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="floor/MeshInstance3D" unique_id=77527702]
+[node name="StaticBody3D" type="StaticBody3D" parent="floor/MeshInstance3D" unique_id=296092232]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/MeshInstance3D/StaticBody3D" unique_id=741183492]
-shape = SubResource("ConvexPolygonShape3D_w2i8b")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/MeshInstance3D/StaticBody3D" unique_id=201182106]
+shape = SubResource("ConvexPolygonShape3D_66w7o")
 
 [node name="env" type="Node3D" parent="." unique_id=1269484846]
 
@@ -44,9 +47,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5353565, -0.064347625, 0)
 [node name="ageis" parent="." unique_id=312730686 instance=ExtResource("4_gw2b2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3568757, 0.66758275, 0)
 
+[node name="button" parent="." unique_id=673357798 instance=ExtResource("5_k0edm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.067071915, -3.093699)
+
+[node name="StaticBody3D" parent="button" index="0" unique_id=1310338567 node_paths=PackedStringArray("door")]
+door = NodePath("../../AnimatableBody3D")
+
+[node name="AnimatableBody3D" parent="." unique_id=991581974 instance=ExtResource("6_8t2hn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25439262, 3.7875876)
+
+[node name="jumpingbad" parent="." unique_id=2139694854 instance=ExtResource("7_7r7d7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+
 [connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]
 
 [editable path="player"]
 [editable path="da portal"]
 [editable path="ageis"]
+[editable path="button"]

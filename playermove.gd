@@ -59,7 +59,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif target.name == "FutureButton":
 				print("FUTURE BUTTON CLICKED")
 				shift_object("future")
-
+			elif target.name == "MassButton":
+				target.activate()
 
 
 

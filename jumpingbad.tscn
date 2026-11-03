@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bg1puronb8gbe"]
+
+[ext_resource type="Script" uid="uid://cqc2nsfuc0wgi" path="res://jumpingbad.gd" id="1_n2wlg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xoqgj"]
+albedo_color = Color(0.033853278, 0.033853278, 0.033853274, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
+material = SubResource("StandardMaterial3D_xoqgj")
+size = Vector3(1, 0.16577148, 3.1523438)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_t7n6i"]
+data = PackedVector3Array(-0.5, 0.082899995, 1.5762, 0.5, 0.082899995, 1.5762, -0.5, -0.082899995, 1.5762, 0.5, 0.082899995, 1.5762, 0.5, -0.082899995, 1.5762, -0.5, -0.082899995, 1.5762, 0.5, 0.082899995, -1.5762, -0.5, 0.082899995, -1.5762, 0.5, -0.082899995, -1.5762, -0.5, 0.082899995, -1.5762, -0.5, -0.082899995, -1.5762, 0.5, -0.082899995, -1.5762, 0.5, 0.082899995, 1.5762, 0.5, 0.082899995, -1.5762, 0.5, -0.082899995, 1.5762, 0.5, 0.082899995, -1.5762, 0.5, -0.082899995, -1.5762, 0.5, -0.082899995, 1.5762, -0.5, 0.082899995, -1.5762, -0.5, 0.082899995, 1.5762, -0.5, -0.082899995, -1.5762, -0.5, 0.082899995, 1.5762, -0.5, -0.082899995, 1.5762, -0.5, -0.082899995, -1.5762, 0.5, 0.082899995, 1.5762, -0.5, 0.082899995, 1.5762, 0.5, 0.082899995, -1.5762, -0.5, 0.082899995, 1.5762, -0.5, 0.082899995, -1.5762, 0.5, 0.082899995, -1.5762, -0.5, -0.082899995, 1.5762, 0.5, -0.082899995, 1.5762, -0.5, -0.082899995, -1.5762, 0.5, -0.082899995, 1.5762, 0.5, -0.082899995, -1.5762, -0.5, -0.082899995, -1.5762)
+
+[node name="jumpingbad" type="Area3D" unique_id=2139694854 groups=["player", "time_cube"]]
+script = ExtResource("1_n2wlg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1226391541]
+mesh = SubResource("BoxMesh_02vh1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=975502682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.041065633, 0)
+shape = SubResource("ConcavePolygonShape3D_t7n6i")
