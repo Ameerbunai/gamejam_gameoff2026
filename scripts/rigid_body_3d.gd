@@ -7,10 +7,16 @@ enum AgeState {
 	FUTURE
 }
 
-# Pickup
+# Player pickup
 var held: bool = false
 var player_camera: Camera3D
 var player_body: CharacterBody3D
+
+# Robot pickup
+var robot_held: bool = false
+var robot_hand: Node3D
+var saved_collision_layer: int
+var saved_collision_mask: int
 
 @export var hold_distance: float = 2.5
 @export var follow_speed: float = 12.0
@@ -44,9 +50,9 @@ func _ready() -> void:
 	apply_age(AgeState.DEFAULT)
 
 
-# PICKUP
+# PLAYER PICKUP
 func try_pickup(camera: Camera3D, body: CharacterBody3D) -> void:
-	if held:
+	if held or robot_held:
 		return
 
 	held = true
@@ -61,7 +67,7 @@ func try_pickup(camera: Camera3D, body: CharacterBody3D) -> void:
 	print("BLOCK PICKED UP")
 
 
-# DROP
+# PLAYER DROP
 func drop_block() -> void:
 	if not held:
 		return
@@ -69,26 +75,70 @@ func drop_block() -> void:
 	held = false
 	freeze = false
 	gravity_scale = 1.0
+
 	player_camera = null
 	player_body = null
 
 	print("BLOCK DROPPED")
 
 
-# FOLLOW CAMERA WHILE HELD
-func _physics_process(delta: float) -> void:
-	if not held or not is_instance_valid(player_camera):
+# ROBOT PICKUP
+func robot_pickup(hand: Node3D) -> bool:
+	if held or robot_held:
+		return false
+
+	robot_held = true
+	robot_hand = hand
+
+	saved_collision_layer = collision_layer
+	saved_collision_mask = collision_mask
+
+	gravity_scale = 0.0
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	freeze = true
+
+	collision_layer = 0
+	collision_mask = 0
+
+	print("ROBOT STOLE THE BLOCK!")
+	return true
+
+
+# ROBOT DROP
+func robot_drop(drop_velocity: Vector3 = Vector3.ZERO) -> void:
+	if not robot_held:
 		return
 
-	var target_position: Vector3 = (
-		player_camera.global_position
-		- player_camera.global_basis.z * hold_distance
-	)
+	robot_held = false
+	robot_hand = null
 
-	global_position = global_position.lerp(
-		target_position,
-		min(follow_speed * delta, 1.0)
-	)
+	freeze = false
+	gravity_scale = 1.0
+
+	collision_layer = saved_collision_layer
+	collision_mask = saved_collision_mask
+
+	linear_velocity = drop_velocity
+
+	print("ROBOT DROPPED THE BLOCK!")
+
+
+# FOLLOW HOLDER
+func _physics_process(delta: float) -> void:
+	if held and is_instance_valid(player_camera):
+		var target_position: Vector3 = (
+			player_camera.global_position
+			- player_camera.global_basis.z * hold_distance
+		)
+
+		global_position = global_position.lerp(
+			target_position,
+			min(follow_speed * delta, 1.0)
+		)
+
+	elif robot_held and is_instance_valid(robot_hand):
+		global_transform = robot_hand.global_transform
 
 
 # AGEING CONTROLS
@@ -104,9 +154,7 @@ func reset_age() -> void:
 	apply_age(AgeState.DEFAULT)
 
 
-# APPLY THE SELECTED STATE
-
-
+# APPLY AGE
 func apply_age(state: AgeState) -> void:
 	age_state = state
 

@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bfvy6fp7av511"]
+
+[ext_resource type="Script" uid="uid://dmg54hlv0lp4j" path="res://scripts/velocity_gun.gd" id="1_dk5gl"]
+[ext_resource type="PackedScene" uid="uid://cy30p1eqif76e" path="res://assests/glock.glb" id="1_vk1bi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_02vh1"]
+size = Vector3(0.720459, 0.49804688, 0.12890625)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ln8aq"]
+spread = 35.0
+initial_velocity_min = 3.0
+initial_velocity_max = 7.0
+scale_min = 0.79999995
+scale_max = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_02vh1"]
+size = Vector2(0.15, 0.15)
+
+[node name="VelocityGun" type="Node3D" unique_id=934320205]
+
+[node name="VelocityGun" type="RigidBody3D" parent="." unique_id=54568931 node_paths=PackedStringArray("muzzle_flash", "muzzle_light")]
+script = ExtResource("1_dk5gl")
+muzzle_flash = NodePath("muzzle/muzzleflash")
+muzzle_light = NodePath("muzzle/muzzlelight")
+
+[node name="glock" parent="VelocityGun" unique_id=417247551 instance=ExtResource("1_vk1bi")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VelocityGun" unique_id=639592302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05025792)
+shape = SubResource("BoxShape3D_02vh1")
+
+[node name="muzzle" type="Marker3D" parent="VelocityGun" unique_id=379078142]
+transform = Transform3D(0.79822934, 0, 0, 0, 0.84679884, 0, 0, 0, 0.5576291, -0.3772175, 0.19099137, -0.044025507)
+
+[node name="muzzleflash" type="GPUParticles3D" parent="VelocityGun/muzzle" unique_id=1052144922]
+transform = Transform3D(1, 0, 0, 0, 1.046227, 0, 0, 0, 1, 0, 0, 0)
+emitting = false
+amount = 16
+lifetime = 0.15000000000000002
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 0
+process_material = SubResource("ParticleProcessMaterial_ln8aq")
+draw_pass_1 = SubResource("QuadMesh_02vh1")
+
+[node name="muzzlelight" type="OmniLight3D" parent="VelocityGun/muzzle" unique_id=569508937]
+light_color = Color(0.19065711, 0.4308054, 0.7805482, 1)
+light_energy = 3.0
+omni_range = 3.0

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bg1puronb8gbe"]
 
-[ext_resource type="Script" uid="uid://cqc2nsfuc0wgi" path="res://jumpingbad.gd" id="1_n2wlg"]
+[ext_resource type="Script" uid="uid://cqc2nsfuc0wgi" path="res://scripts/jumpingbad.gd" id="1_n2wlg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xoqgj"]
 albedo_color = Color(0.033853278, 0.033853278, 0.033853274, 1)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cijx5lnlewr3s"]
 
-[ext_resource type="Script" uid="uid://dmja5n4d8txwx" path="res://sen/rigid_body_3d.gd" id="1_2jtgs"]
+[ext_resource type="Script" uid="uid://dmja5n4d8txwx" path="res://scripts/rigid_body_3d.gd" id="1_2jtgs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xoqgj"]
 

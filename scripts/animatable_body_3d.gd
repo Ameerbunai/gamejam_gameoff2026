@@ -10,6 +10,16 @@ var is_closing: bool = false
 
 
 func _ready() -> void:
+	print("DOOR READY")
+
+	if animation_player == null:
+		print("ERROR: ANIMATION PLAYER IS NULL")
+		return
+
+	print("ANIMATIONS: ", animation_player.get_animation_list())
+	print("DOOR COLLISION: ", door_collision)
+
+	animation_player.animation_finished.connect(_on_animation_finished)
 	if animation_player == null:
 		push_error("AnimationPlayer not assigned!")
 		return
@@ -27,6 +37,16 @@ func _ready() -> void:
 
 
 func open_door() -> void:
+	print("OPEN DOOR CALLED")
+
+	if is_open or animation_player == null:
+		return
+
+	is_open = true
+	door_collision.set_deferred("disabled", true)
+	animation_player.play(open_animation)
+
+	print("PLAYING: ", open_animation)
 	if is_open or animation_player == null:
 		return
 

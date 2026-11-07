@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://b0kclb3oq0j4r"]
 
-[ext_resource type="Script" uid="uid://clk1j5ygae23x" path="res://scripts/main.gd" id="1_5turn"]
 [ext_resource type="PackedScene" uid="uid://nk40a2wnyb5h" path="res://sen/player.tscn" id="1_w2i8b"]
 [ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="2_mueu3"]
 [ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="4_gw2b2"]
 [ext_resource type="PackedScene" uid="uid://h4b0qy5c5av6" path="res://sen/button.tscn" id="5_k0edm"]
 [ext_resource type="PackedScene" uid="uid://cy64c4vf2aesf" path="res://sen/animatable_body_3d.tscn" id="6_8t2hn"]
-[ext_resource type="PackedScene" uid="uid://bg1puronb8gbe" path="res://jumpingbad.tscn" id="7_7r7d7"]
+[ext_resource type="PackedScene" uid="uid://bg1puronb8gbe" path="res://sen/jumpingbad.tscn" id="7_7r7d7"]
+[ext_resource type="PackedScene" uid="uid://bfvy6fp7av511" path="res://sen/gun.tscn" id="7_66w7o"]
+
+[sub_resource type="GDScript" id="GDScript_8t2hn"]
+script/source = "extends Node3D
+"
 
 [sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
 size = Vector3(31, 0.23144531, 33)
@@ -17,7 +21,7 @@ points = PackedVector3Array(15.5, 0.11572267, 16.5, 15.5, -0.115722656, 16.5, 15
 [sub_resource type="Environment" id="Environment_02vh1"]
 
 [node name="main" type="Node3D" unique_id=921653221]
-script = ExtResource("1_5turn")
+script = SubResource("GDScript_8t2hn")
 
 [node name="floor" type="Node3D" parent="." unique_id=1301555787]
 
@@ -35,17 +39,14 @@ shape = SubResource("ConvexPolygonShape3D_66w7o")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=1541715152]
 environment = SubResource("Environment_02vh1")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env" unique_id=1258627584]
-transform = Transform3D(0.69741595, 0.012368477, 0.7165599, -0.7166665, 0.0120362425, 0.69731206, 0, -0.99985105, 0.01725834, 7.18555, 6.1955733, 0)
-
 [node name="player" parent="." unique_id=1760399875 instance=ExtResource("1_w2i8b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.992067, 1, 4.1817994)
 
 [node name="da portal" parent="." unique_id=2055683923 instance=ExtResource("2_mueu3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5353565, -0.064347625, 0)
 
 [node name="ageis" parent="." unique_id=312730686 instance=ExtResource("4_gw2b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3568757, 0.66758275, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.436333, 0.66758275, 0)
 
 [node name="button" parent="." unique_id=673357798 instance=ExtResource("5_k0edm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.067071915, -3.093699)
@@ -59,6 +60,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25439262, 3.7875876)
 [node name="jumpingbad" parent="." unique_id=2139694854 instance=ExtResource("7_7r7d7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
 
+[node name="VelocityGun" parent="." unique_id=934320205 instance=ExtResource("7_66w7o")]
+
+[node name="VelocityGun" parent="VelocityGun" index="0" unique_id=54568931]
+boost_strength = 6.0
+
 [connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]
 
@@ -66,3 +72,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
 [editable path="da portal"]
 [editable path="ageis"]
 [editable path="button"]
+[editable path="VelocityGun"]

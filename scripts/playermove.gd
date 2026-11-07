@@ -7,20 +7,38 @@ extends CharacterBody3D
 @export var pickup_distance: float = 4.0
 @export var hold_distance: float = 2.5
 @export var hold_strength: float = 10.0
+@export var shake_strength: float = 0.04
+@export var shake_duration: float = 0.12
+
+var shake_timer: float = 0.0
+var camera_original_position: Vector3
+# Movement launcher
+@export var boost_cooldown: float = 0.8
+@export var boost_duration: float = 0.45
+@export var boost_fov: float = 95.0
+@export var fov_animation_time: float = 0.25
+
 var objects_in_portal: Array[RigidBody3D] = []
 var gravity: float = 9.8
 var held_block: RigidBody3D = null
+var selected_block: RigidBody3D = null
+
+var boost_cooldown_timer: float = 0.0
+var boost_active_timer: float = 0.0
+var normal_fov: float = 75.0
+var fov_tween: Tween
 
 @onready var camera: Camera3D = $Camera3D
 @onready var interact_ray: RayCast3D = $Camera3D/RayCast3D
-var selected_block: RigidBody3D = null
+
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	normal_fov = camera.fov
+	camera_original_position = camera.position
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Pick up / drop with E
 	if event.is_action_pressed("interact"):
 		if held_block != null:
 			if is_instance_valid(held_block):
@@ -29,12 +47,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			try_pickup_block()
 
-	
-	
-	# Click physical Past / Future buttons
-
+	# Left-click: use the held gun or click world buttons.
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+
+			if held_block != null and is_instance_valid(held_block):
+				if held_block.has_method("shoot"):
+					held_block.shoot(camera)
+					return
+
 			print("CLICK RECEIVED")
 
 			var from: Vector3 = camera.global_position
@@ -53,16 +74,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("HIT: ", target.name)
 
 			if target.name == "PastButton":
-				print("PAST BUTTON CLICKED")
 				shift_object("past")
 
 			elif target.name == "FutureButton":
-				print("FUTURE BUTTON CLICKED")
 				shift_object("future")
+
 			elif target.name == "MassButton":
 				target.activate()
-
-
 
 	# Mouse look
 	if event is InputEventMouseMotion:
@@ -84,6 +102,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	boost_cooldown_timer = maxf(0.0, boost_cooldown_timer - delta)
+	boost_active_timer = maxf(0.0, boost_active_timer - delta)
+
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -104,6 +125,11 @@ func _physics_process(delta: float) -> void:
 	var acceleration := 20.0
 	var deceleration := 25.0
 
+	# Preserve momentum while the launcher boost is active.
+	if boost_active_timer > 0.0:
+		acceleration = 5.0
+		deceleration = 3.5
+
 	if direction != Vector3.ZERO:
 		velocity.x = move_toward(
 			velocity.x, direction.x * speed, acceleration * delta
@@ -121,6 +147,45 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	move_held_block()
+
+
+# Called by the gun.
+func apply_movement_boost(direction: Vector3, strength: float) -> void:
+	play_camera_shake()
+	if boost_cooldown_timer > 0.0:
+		return
+
+	direction = direction.normalized()
+
+	velocity += direction * strength
+
+	boost_cooldown_timer = boost_cooldown
+	boost_active_timer = boost_duration
+
+	animate_boost_fov()
+
+	print("RECOIL: ", direction)
+
+
+func animate_boost_fov() -> void:
+	if fov_tween != null and fov_tween.is_running():
+		fov_tween.kill()
+
+	fov_tween = create_tween()
+
+	fov_tween.tween_property(
+		camera,
+		"fov",
+		boost_fov,
+		0.10
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	fov_tween.tween_property(
+		camera,
+		"fov",
+		normal_fov,
+		fov_animation_time
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func try_pickup_block() -> void:
@@ -147,6 +212,8 @@ func try_pickup_block() -> void:
 			print("BLOCK SELECTED")
 	else:
 		print("NOT A PICKUP BLOCK")
+
+
 func move_held_block() -> void:
 	if held_block == null:
 		return
@@ -176,6 +243,7 @@ func shift_object(direction: String) -> void:
 	elif direction == "future":
 		target.future()
 
+
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == self:
 		Global.is_in_portal = true
@@ -197,3 +265,19 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body is RigidBody3D:
 		objects_in_portal.erase(body)
 		print("OBJECT LEFT PORTAL: ", body.name)
+func play_camera_shake() -> void:
+	shake_timer = shake_duration
+	
+func _process(delta: float) -> void:
+	if shake_timer > 0.0:
+		shake_timer -= delta
+
+		var strength := shake_strength * (shake_timer / shake_duration)
+
+		camera.position = camera_original_position + Vector3(
+			randf_range(-strength, strength),
+			randf_range(-strength, strength),
+			randf_range(-strength, strength)
+		)
+	else:
+		camera.position = camera_original_position

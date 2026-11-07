@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c3g3yjvk6egru"
-valid=false
+uid="uid://obv0qrqsdmd6"
+path="res://.godot/imported/notdone_starterroom.glb-ab4fc0fbc42be1d1fc319af1d645d92d.scn"
 
 [deps]
 
-source_file="res://sen/scene.gltf"
+source_file="res://assests/notdone_starterroom.glb"
+dest_files=["res://.godot/imported/notdone_starterroom.glb-ab4fc0fbc42be1d1fc319af1d645d92d.scn"]
 
 [params]
 
