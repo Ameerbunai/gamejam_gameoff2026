@@ -304,11 +304,9 @@ _data = {
 script = ExtResource("1_28f2c")
 animation_player = NodePath("betterdoorglb/AnimationPlayer")
 door_collision = NodePath("CollisionShape3D")
-open_animation = &"open_anmtons"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1852203893]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1569558, 0)
-visible = false
 shape = SubResource("BoxShape3D_oxhm2")
 
 [node name="betterdoorglb" type="Node3D" parent="." unique_id=658459374]

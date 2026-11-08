@@ -36,12 +36,16 @@ func try_pickup(camera: Camera3D, player: CharacterBody3D) -> void:
 	print("MOVEMENT GUN PICKED UP")
 
 
+
 func drop_block() -> void:
 	if not held:
 		return
 
 	held = false
 	freeze = false
+	sleeping = false
+	gravity_scale = 1.0
+	can_sleep = false
 
 	collision_layer = original_collision_layer
 	collision_mask = original_collision_mask
