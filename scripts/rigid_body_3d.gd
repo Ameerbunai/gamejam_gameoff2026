@@ -1,6 +1,10 @@
 
 extends RigidBody3D
 
+@export var default_texture: Texture2D
+@export var past_texture: Texture2D
+@export var future_texture: Texture2D
+
 enum AgeState {
 	DEFAULT,
 	PAST,
@@ -166,21 +170,24 @@ func apply_age(state: AgeState) -> void:
 			mass = default_mass
 			mesh.scale = default_size
 			collision.scale = default_size
-			new_material.albedo_color = Color.GRAY
+			new_material.albedo_texture = default_texture
+			new_material.albedo_color = Color.WHITE
 			print("AGE APPLIED: DEFAULT")
 
 		AgeState.PAST:
 			mass = past_mass
 			mesh.scale = past_size
 			collision.scale = past_size
-			new_material.albedo_color = Color.BLACK
+			new_material.albedo_texture = past_texture
+			new_material.albedo_color = Color.WHITE
 			print("AGE APPLIED: PAST")
 
 		AgeState.FUTURE:
 			mass = future_mass
 			mesh.scale = future_size
 			collision.scale = future_size
-			new_material.albedo_color = Color(0.36, 0.18, 0.08)
+			new_material.albedo_texture = future_texture
+			new_material.albedo_color = Color.WHITE
 			print("AGE APPLIED: FUTURE")
 
 	mesh.material_override = new_material

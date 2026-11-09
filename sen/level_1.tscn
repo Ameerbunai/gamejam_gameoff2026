@@ -4,10 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://bbw851hjmaexp" path="res://assests/notdone_starterroom_oak_wood_planks_rough.png" id="2_rka8t"]
 [ext_resource type="Texture2D" uid="uid://bbr7qsn0dxl7l" path="res://assests/notdone_starterroom_oak_wood_planks_nor_gl.png" id="3_5hph3"]
 [ext_resource type="PackedScene" uid="uid://nk40a2wnyb5h" path="res://sen/player.tscn" id="4_j7kpp"]
-[ext_resource type="Texture2D" uid="uid://i3yh61q6njwg" path="res://assests/blury_normal.png" id="4_rka8t"]
+[ext_resource type="Shader" uid="uid://bscxku4g7wqbi" path="res://sen/level_1.gdshader" id="4_yqtdj"]
 [ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="6_5rr72"]
 [ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="7_gyffv"]
 [ext_resource type="PackedScene" uid="uid://h4b0qy5c5av6" path="res://sen/button.tscn" id="8_1pe0h"]
+[ext_resource type="Texture2D" uid="uid://2k1slqfrw61g" path="res://texter_only/metal_plate_1k.gltf/textures/metal_plate_rough_1k.jpg" id="8_xr8pf"]
 [ext_resource type="PackedScene" uid="uid://cy64c4vf2aesf" path="res://sen/animatable_body_3d.tscn" id="9_27bay"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_27hnx"]
@@ -356,15 +357,15 @@ shadow_mesh = SubResource("ArrayMesh_b6mmh")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ttn6t"]
 points = PackedVector3Array(0.012427827, 0.7319723, 0.5157683, 0.024865372, 0.7319723, 0.49425903, -0.012437529, 0.7319723, 0.5157683, 0.012427827, 0.004556546, 0.5157683, 0.0058853365, 0.7268451, 0, -4.850328e-06, 0.730192, 0, 0.012427827, 0.7319723, 0.47269925, 0.024865372, 0.004556546, 0.49425903, -0.024865339, 0.7319723, 0.49425903, -0.012437529, 0.004556546, 0.5157683, 0.0058853365, 0.008829178, 0, -0.00589017, 0.7268451, 0, -0.012437529, 0.7319723, 0.47269925, 0.012427827, 0.004556546, 0.47269925, -4.850328e-06, 0.0054110726, 0, -0.024865339, 0.004556546, 0.49425903, -0.00589017, 0.008829178, 0, -0.012437529, 0.004556546, 0.47269925)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yi60d"]
-albedo_color = Color(1, 1, 1, 0)
-metallic = 1.0
-metallic_specular = 0.1
-metallic_texture = ExtResource("4_rka8t")
-refraction_scale = -1.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ktrrj"]
+render_priority = 0
+shader = ExtResource("4_yqtdj")
+shader_parameter/blur_strength = 0.035
+shader_parameter/glass_tint = Color(1, 0.75, 0.25, 1)
+shader_parameter/tint_strength = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
-material = SubResource("StandardMaterial3D_yi60d")
+material = SubResource("ShaderMaterial_ktrrj")
 size = Vector3(5.96521, 2.7983398, 0.34545898)
 
 [sub_resource type="BoxMesh" id="BoxMesh_yi60d"]
@@ -506,7 +507,7 @@ mesh = SubResource("ArrayMesh_64lhw")
 shape = SubResource("ConvexPolygonShape3D_ttn6t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="notdone_starterroom" unique_id=212835593]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.469026, 3.3722749, -4.1718493)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.469026, 3.1281705, -4.1718493)
 mesh = SubResource("BoxMesh_02vh1")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="notdone_starterroom" unique_id=548594965]
@@ -548,6 +549,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.616425, 0, 10.096941)
 
 [node name="ageis" parent="." unique_id=312730686 instance=ExtResource("7_gyffv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.940453, 0.45037198, 13.83201)
+
+[node name="RigidBody3D" parent="ageis" index="0" unique_id=882170794]
+default_texture = ExtResource("8_xr8pf")
 
 [node name="button" parent="." unique_id=673357798 instance=ExtResource("8_1pe0h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0792456, -0.05395794, 12.657056)

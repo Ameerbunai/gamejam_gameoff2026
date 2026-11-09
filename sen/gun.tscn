@@ -20,8 +20,12 @@ size = Vector2(0.15, 0.15)
 
 [node name="VelocityGun" type="RigidBody3D" parent="." unique_id=54568931 node_paths=PackedStringArray("muzzle_flash", "muzzle_light")]
 script = ExtResource("1_dk5gl")
+boost_strength = 7.0
 muzzle_flash = NodePath("muzzle/muzzleflash")
 muzzle_light = NodePath("muzzle/muzzlelight")
+rage_per_minute = 30.0
+rage_per_shot = 30.0
+cooldown_time = 3.0
 
 [node name="glock" parent="VelocityGun" unique_id=417247551 instance=ExtResource("1_vk1bi")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

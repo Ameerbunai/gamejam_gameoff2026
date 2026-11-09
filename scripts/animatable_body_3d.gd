@@ -31,7 +31,8 @@ func _ready() -> void:
 	animation_player.stop()
 	door_collision.disabled = false
 
-	animation_player.animation_finished.connect(_on_animation_finished)
+	if not animation_player.animation_finished.is_connected(_on_animation_finished):
+		animation_player.animation_finished.connect(_on_animation_finished)
 
 	print("DOOR READY")
 
