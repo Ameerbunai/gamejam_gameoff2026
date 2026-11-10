@@ -58,7 +58,7 @@ door = NodePath("../../AnimatableBody3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25439262, 3.7875876)
 
 [node name="jumpingbad" parent="." unique_id=2139694854 instance=ExtResource("7_7r7d7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+transform = Transform3D(1, 0, 0, 0, 0.41342333, 0.9105389, 0, -0.9105389, 0.41342333, 4, 0.7948072, 5)
 
 [node name="VelocityGun" parent="." unique_id=934320205 instance=ExtResource("7_66w7o")]
 
