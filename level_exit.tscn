@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cdl3nwfin3utr"]
+
+[ext_resource type="Script" uid="uid://d4k4tcwa6l6el" path="res://level_exit.gd" id="1_whe5f"]
+[ext_resource type="VideoStream" uid="uid://csymjqsl3onb3" path="res://next level cutsean.ogv" id="2_k4ovl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_02vh1"]
+
+[node name="LevelExit" type="Area3D" unique_id=1142119970 node_paths=PackedStringArray("video_player")]
+script = ExtResource("1_whe5f")
+video_player = NodePath("CanvasLayer/VideoStreamPlayer")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1024103863]
+shape = SubResource("BoxShape3D_02vh1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=904093744]
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer" unique_id=1800244361]
+offset_right = 1280.0
+offset_bottom = 720.0
+stream = ExtResource("2_k4ovl")

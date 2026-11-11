@@ -8,8 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="6_5rr72"]
 [ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="7_gyffv"]
 [ext_resource type="PackedScene" uid="uid://h4b0qy5c5av6" path="res://sen/button.tscn" id="8_1pe0h"]
-[ext_resource type="Texture2D" uid="uid://2k1slqfrw61g" path="res://texter_only/metal_plate_1k.gltf/textures/metal_plate_rough_1k.jpg" id="8_xr8pf"]
 [ext_resource type="PackedScene" uid="uid://cy64c4vf2aesf" path="res://sen/animatable_body_3d.tscn" id="9_27bay"]
+[ext_resource type="PackedScene" uid="uid://cdl3nwfin3utr" path="res://level_exit.tscn" id="10_xr8pf"]
+[ext_resource type="PackedScene" uid="uid://dpqw6i1qc0iho" path="res://level_2.tscn" id="11_ktrrj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_27hnx"]
 resource_name = "bedframe"
@@ -550,9 +551,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.616425, 0, 10.096941)
 [node name="ageis" parent="." unique_id=312730686 instance=ExtResource("7_gyffv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.940453, 0.45037198, 13.83201)
 
-[node name="RigidBody3D" parent="ageis" index="0" unique_id=882170794]
-default_texture = ExtResource("8_xr8pf")
-
 [node name="button" parent="." unique_id=673357798 instance=ExtResource("8_1pe0h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0792456, -0.05395794, 12.657056)
 
@@ -562,6 +560,10 @@ door = NodePath("../../AnimatableBody3D")
 [node name="AnimatableBody3D" parent="." unique_id=991581974 instance=ExtResource("9_27bay")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.125978, -0.1497221, 0.39286435)
 
+[node name="LevelExit" parent="." unique_id=1142119970 instance=ExtResource("10_xr8pf")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -22.138336, -13.664784, -0.6777642)
+next_level = ExtResource("11_ktrrj")
+
 [connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]
 
@@ -569,3 +571,4 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -19.
 [editable path="da portal"]
 [editable path="ageis"]
 [editable path="button"]
+[editable path="LevelExit"]

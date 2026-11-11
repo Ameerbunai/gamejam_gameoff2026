@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://uh7e52urpcy"]
+
+[ext_resource type="Script" uid="uid://331xxm5k415q" path="res://voicetrigger.gd" id="1_y7wel"]
+[ext_resource type="AudioStream" uid="uid://ceigbvwitdjlx" path="res://explosion-meme_dTCfAHs.mp3" id="2_540r6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_02vh1"]
+
+[node name="voicetrigger" type="Area3D" unique_id=46938588]
+script = ExtResource("1_y7wel")
+voice_audio = ExtResource("2_540r6")
+subtitle_text = "blah blah blah test test"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1687749784]
+shape = SubResource("BoxShape3D_02vh1")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1957995907]

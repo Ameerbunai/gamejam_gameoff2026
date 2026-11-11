@@ -7,6 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://cy64c4vf2aesf" path="res://sen/animatable_body_3d.tscn" id="6_8t2hn"]
 [ext_resource type="PackedScene" uid="uid://bg1puronb8gbe" path="res://sen/jumpingbad.tscn" id="7_7r7d7"]
 [ext_resource type="PackedScene" uid="uid://bfvy6fp7av511" path="res://sen/gun.tscn" id="7_66w7o"]
+[ext_resource type="PackedScene" uid="uid://cdl3nwfin3utr" path="res://level_exit.tscn" id="8_85kwn"]
+[ext_resource type="PackedScene" uid="uid://1ybd0fn1fbjd" path="res://sen/level_1.tscn" id="9_nsddo"]
+[ext_resource type="PackedScene" uid="uid://uh7e52urpcy" path="res://voicetrigger.tscn" id="10_nsddo"]
+[ext_resource type="AudioStream" uid="uid://ceigbvwitdjlx" path="res://explosion-meme_dTCfAHs.mp3" id="11_faxcd"]
+[ext_resource type="Script" uid="uid://ds4rhfp0c7sg7" path="res://submager.gd" id="12_q4arx"]
 
 [sub_resource type="GDScript" id="GDScript_8t2hn"]
 script/source = "extends Node3D
@@ -65,6 +70,36 @@ transform = Transform3D(1, 0, 0, 0, 0.41342333, 0.9105389, 0, -0.9105389, 0.4134
 [node name="VelocityGun" parent="VelocityGun" index="0" unique_id=54568931]
 boost_strength = 6.0
 
+[node name="LevelExit" parent="." unique_id=1142119970 instance=ExtResource("8_85kwn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.502471, 7.9004884)
+next_level = ExtResource("9_nsddo")
+
+[node name="voicetrigger" parent="." unique_id=46938588 instance=ExtResource("10_nsddo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6044939, 1.6235108, -6.1266227)
+
+[node name="AudioStreamPlayer" parent="voicetrigger" index="1" unique_id=1957995907]
+stream = ExtResource("11_faxcd")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1050204482 groups=["SubtitleManager"]]
+script = ExtResource("12_q4arx")
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=145502794]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -230.0
+offset_right = 3.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+offset_transform_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]
 
@@ -73,3 +108,4 @@ boost_strength = 6.0
 [editable path="ageis"]
 [editable path="button"]
 [editable path="VelocityGun"]
+[editable path="voicetrigger"]

@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://cijx5lnlewr3s" path="res://sen/ageis.tscn" id="5_7dov7"]
 [ext_resource type="PackedScene" uid="uid://d2qfarorw72xh" path="res://sen/da_portal.tscn" id="6_ehv2h"]
 [ext_resource type="PackedScene" uid="uid://cpxvp4hvm5peu" path="res://assests/Spot light 2.0.glb" id="10_eoq84"]
+[ext_resource type="PackedScene" uid="uid://cdl3nwfin3utr" path="res://level_exit.tscn" id="11_eoq84"]
+[ext_resource type="PackedScene" uid="uid://dmtyluqekol0u" path="res://level_3.tscn" id="12_yl73a"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sxq20"]
 size = Vector3(1, 1.605, 1)
@@ -331,6 +333,10 @@ transform = Transform3D(-2.6226834e-07, 0, -6.0000005, 0, 6, 0, 6.0000005, 0, -2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="world env" unique_id=176069375]
 environment = SubResource("Environment_yi60d")
+
+[node name="LevelExit" parent="." unique_id=1142119970 instance=ExtResource("11_eoq84")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -6.3256893, -14.12946)
+next_level = ExtResource("12_yl73a")
 
 [connection signal="body_entered" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="da portal/da coll/Area3D" to="player/CharacterBody3D" method="_on_area_3d_body_exited"]

@@ -52,3 +52,9 @@ draw_pass_1 = SubResource("QuadMesh_02vh1")
 light_color = Color(0.19065711, 0.4308054, 0.7805482, 1)
 light_energy = 3.0
 omni_range = 3.0
+
+[node name="ShootSound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=562311736]
+
+[node name="EquipSound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=1219487094]
+
+[node name="AngrySound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=835550403]

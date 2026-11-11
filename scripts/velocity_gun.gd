@@ -8,10 +8,20 @@ extends RigidBody3D
 @export var muzzle_flash: GPUParticles3D
 @export var muzzle_light: OmniLight3D
 
+# SOUND EFFECTS
+@export var shoot_sound: AudioStreamPlayer3D
+@export var equip_sound: AudioStreamPlayer3D
+@export var angry_sound: AudioStreamPlayer3D
+
 # RAGE SETTINGS
 @export var rage_per_minute: float = 10.0
 @export var rage_per_shot: float = 10.0
 @export var cooldown_time: float = 5.0
+
+# ANGRY SHAKE SETTINGS
+@export var shake_position_strength: float = 0.025
+@export var shake_rotation_strength: float = 2.0
+@export var shake_speed: float = 35.0
 
 var rage: float = 0.0
 var rage_locked: bool = false
@@ -25,6 +35,7 @@ var original_collision_layer: int
 var original_collision_mask: int
 
 var hold_rage_timer: float = 0.0
+var shake_timer: float = 0.0
 
 var gun_meshes: Array[MeshInstance3D] = []
 var original_materials: Array[Material] = []
@@ -60,7 +71,10 @@ func _process(delta: float) -> void:
 		if rage_cooldown <= 0.0:
 			rage = 0.0
 			rage_locked = false
+			shake_timer = 0.0
+
 			update_gun_appearance()
+
 			print("GUN CALMED DOWN")
 
 
@@ -74,23 +88,32 @@ func add_rage(amount: float) -> void:
 
 	if rage >= 100.0:
 		rage_locked = true
+		shake_timer = 0.0
+
+		play_sound(angry_sound)
+
 		print("THE GUN IS FURIOUS!")
-	
+
 	update_gun_appearance()
 
 
 func update_gun_appearance() -> void:
 	for i in range(gun_meshes.size()):
-		var gun_mesh = gun_meshes[i]
+		var gun_mesh := gun_meshes[i]
 
 		if rage_locked:
 			var angry_material := StandardMaterial3D.new()
 			angry_material.albedo_color = Color.RED
 			angry_material.metallic = 0.5
+
 			gun_mesh.material_override = angry_material
 		else:
 			gun_mesh.material_override = original_materials[i]
 
+
+# =========================
+# PICKUP
+# =========================
 
 func try_pickup(camera: Camera3D, player: CharacterBody3D) -> void:
 	if held:
@@ -102,12 +125,15 @@ func try_pickup(camera: Camera3D, player: CharacterBody3D) -> void:
 
 	rage_cooldown = 0.0
 	hold_rage_timer = 0.0
+	shake_timer = 0.0
 
 	freeze = true
 	sleeping = false
 
 	collision_layer = 0
 	collision_mask = 0
+
+	play_sound(equip_sound)
 
 	print("MOVEMENT GUN PICKED UP")
 
@@ -132,11 +158,16 @@ func drop_block() -> void:
 	holder = null
 
 	rage_cooldown = cooldown_time
+	shake_timer = 0.0
 
 	print("GUN DROPPED")
 
 
-func _physics_process(_delta: float) -> void:
+# =========================
+# HOLDING AND SHAKING
+# =========================
+
+func _physics_process(delta: float) -> void:
 	if not held:
 		return
 
@@ -146,22 +177,50 @@ func _physics_process(_delta: float) -> void:
 
 	var camera_basis := holder_camera.global_basis
 
+	var local_position_offset := hold_offset
+	var local_rotation_offset := Vector3(
+		deg_to_rad(hold_rotation_degrees.x),
+		deg_to_rad(hold_rotation_degrees.y),
+		deg_to_rad(hold_rotation_degrees.z)
+	)
+
+	# Angry shaking
+	if rage_locked:
+		shake_timer += delta
+
+		var shake_x := sin(shake_timer * shake_speed)
+		var shake_y := sin(shake_timer * shake_speed * 1.37)
+		var shake_z := sin(shake_timer * shake_speed * 0.83)
+
+		local_position_offset += Vector3(
+			shake_x,
+			shake_y,
+			shake_z
+		) * shake_position_strength
+
+		local_rotation_offset += Vector3(
+			shake_y,
+			shake_z,
+			shake_x
+		) * deg_to_rad(shake_rotation_strength)
+
+	else:
+		shake_timer = 0.0
+
 	global_position = (
 		holder_camera.global_position
-		+ camera_basis * hold_offset
+		+ camera_basis * local_position_offset
 	)
 
 	global_basis = (
 		camera_basis
-		* Basis.from_euler(
-			Vector3(
-				deg_to_rad(hold_rotation_degrees.x),
-				deg_to_rad(hold_rotation_degrees.y),
-				deg_to_rad(hold_rotation_degrees.z)
-			)
-		)
+		* Basis.from_euler(local_rotation_offset)
 	)
 
+
+# =========================
+# SHOOTING
+# =========================
 
 func shoot(camera: Camera3D) -> void:
 	if not held or not is_instance_valid(holder):
@@ -173,6 +232,7 @@ func shoot(camera: Camera3D) -> void:
 
 	add_rage(rage_per_shot)
 
+	play_sound(shoot_sound)
 	play_shoot_effect()
 
 	var shot_direction := -camera.global_basis.z
@@ -182,6 +242,24 @@ func shoot(camera: Camera3D) -> void:
 
 	print("RECOIL BLAST!")
 
+
+# =========================
+# SOUND SYSTEM
+# =========================
+
+func play_sound(sound: AudioStreamPlayer3D) -> void:
+	if not is_instance_valid(sound):
+		return
+
+	if sound.stream == null:
+		return
+
+	sound.play()
+
+
+# =========================
+# MUZZLE EFFECTS
+# =========================
 
 func play_shoot_effect() -> void:
 	if is_instance_valid(muzzle_flash):
@@ -193,6 +271,7 @@ func play_shoot_effect() -> void:
 		muzzle_light.light_energy = 3.0
 
 		var tween := create_tween()
+
 		tween.tween_property(
 			muzzle_light,
 			"light_energy",
@@ -204,4 +283,5 @@ func play_shoot_effect() -> void:
 
 
 func _hide_muzzle_light() -> void:
-	muzzle_light.visible = false
+	if is_instance_valid(muzzle_light):
+		muzzle_light.visible = false
