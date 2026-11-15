@@ -12,7 +12,7 @@ enum ButtonAction {
 @export var required_mass: float = 2.0
 @export var mass_tolerance: float = 0.1
 @export var controller: Node3D
-
+@export var switch_sound: AudioStreamPlayer3D
 @onready var detection_area: Area3D = $DetectionArea
 
 var pressed_body: RigidBody3D = null
@@ -85,6 +85,9 @@ func _try_activate(body: Node3D) -> void:
 			controller.call("set_vertical_direction", -1.0)
 
 		ButtonAction.SWITCH_PAD:
+			if is_instance_valid(switch_sound):
+				switch_sound.play()
+
 			controller.call("switch_pad")
 
 

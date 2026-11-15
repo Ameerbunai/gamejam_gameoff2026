@@ -143,6 +143,8 @@ func drop_block() -> void:
 		return
 
 	held = false
+	if is_instance_valid(angry_sound):
+		angry_sound.stop()
 	freeze = false
 	sleeping = false
 	gravity_scale = 1.0

@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dmg54hlv0lp4j" path="res://scripts/velocity_gun.gd" id="1_dk5gl"]
 [ext_resource type="PackedScene" uid="uid://cy30p1eqif76e" path="res://assests/glock.glb" id="1_vk1bi"]
+[ext_resource type="AudioStream" uid="uid://ku5u0eu5b2rk" path="res://sound effects/maxhammarback-glock19-18535.mp3" id="3_burp2"]
+[ext_resource type="AudioStream" uid="uid://cex82k3x7syen" path="res://sound effects/freesound_community-pistol-draw-unholster-80799.mp3" id="4_x342r"]
+[ext_resource type="AudioStream" uid="uid://co0wj8l8m1aeb" path="res://sound effects/angry-roblox.mp3" id="5_bd52i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_02vh1"]
 size = Vector3(0.720459, 0.49804688, 0.12890625)
@@ -18,11 +21,14 @@ size = Vector2(0.15, 0.15)
 
 [node name="VelocityGun" type="Node3D" unique_id=934320205]
 
-[node name="VelocityGun" type="RigidBody3D" parent="." unique_id=54568931 node_paths=PackedStringArray("muzzle_flash", "muzzle_light")]
+[node name="VelocityGun" type="RigidBody3D" parent="." unique_id=54568931 node_paths=PackedStringArray("muzzle_flash", "muzzle_light", "shoot_sound", "equip_sound", "angry_sound")]
 script = ExtResource("1_dk5gl")
 boost_strength = 7.0
 muzzle_flash = NodePath("muzzle/muzzleflash")
 muzzle_light = NodePath("muzzle/muzzlelight")
+shoot_sound = NodePath("ShootSound")
+equip_sound = NodePath("EquipSound")
+angry_sound = NodePath("AngrySound")
 rage_per_minute = 30.0
 rage_per_shot = 30.0
 cooldown_time = 3.0
@@ -54,7 +60,11 @@ light_energy = 3.0
 omni_range = 3.0
 
 [node name="ShootSound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=562311736]
+stream = ExtResource("3_burp2")
 
 [node name="EquipSound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=1219487094]
+stream = ExtResource("4_x342r")
 
 [node name="AngrySound" type="AudioStreamPlayer3D" parent="VelocityGun" unique_id=835550403]
+stream = ExtResource("5_bd52i")
+parameters/looping = true

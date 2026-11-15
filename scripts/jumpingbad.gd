@@ -23,7 +23,3 @@ func _on_body_entered(body: Node3D) -> void:
 		body.sleeping = false
 		body.linear_velocity = launch_direction * cube_launch_velocity
 		print("CUBE LAUNCHED: ", launch_direction)
-
-
-func _on_detection_area_body_exited(body):
-	pass # Replace with function body.

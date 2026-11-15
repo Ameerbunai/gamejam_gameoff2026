@@ -1,6 +1,7 @@
 
 extends CharacterBody3D
-
+@export var max_health: float = 100.0
+var health: float = 100.0
 @export var speed: float = 7.0
 @export var jump_velocity: float = 5.0
 @export var mouse_sensitivity: float = 0.002
@@ -9,10 +10,19 @@ extends CharacterBody3D
 @export var hold_strength: float = 10.0
 @export var shake_strength: float = 0.04
 @export var shake_duration: float = 0.12
+@export var footstep_interval: float = 0.45
+@export var damage_effect: Node
+@onready var footstep_sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
+
+var footstep_timer: float = 0.0
+var controls_locked: bool = false
+@onready var landing_sound: AudioStreamPlayer3D =  $AudioStreamPlayer3D2
+
+var was_on_floor: bool = false
 var shake_timer: float = 0.0
 var camera_original_position: Vector3
-# Movement launcher
+
 @export var boost_cooldown: float = 0.8
 @export var boost_duration: float = 0.45
 @export var boost_fov: float = 95.0
@@ -39,6 +49,28 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Mouse look
+	if event is InputEventMouseMotion:
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			rotate_y(-event.relative.x * mouse_sensitivity)
+			camera.rotate_x(-event.relative.y * mouse_sensitivity)
+			camera.rotation.x = clamp(
+				camera.rotation.x,
+				deg_to_rad(-89.0),
+				deg_to_rad(89.0)
+			)
+
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+	if event is InputEventMouseButton and event.pressed:
+		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	# Stop gameplay actions during malfunction.
+	if controls_locked:
+		return
+
 	if event.is_action_pressed("interact"):
 		if held_block != null:
 			if is_instance_valid(held_block):
@@ -82,28 +114,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif target.name == "MassButton":
 				target.activate()
 
-	# Mouse look
-	if event is InputEventMouseMotion:
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			rotate_y(-event.relative.x * mouse_sensitivity)
-			camera.rotate_x(-event.relative.y * mouse_sensitivity)
-			camera.rotation.x = clamp(
-				camera.rotation.x,
-				deg_to_rad(-89.0),
-				deg_to_rad(89.0)
-			)
-
-	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
-	if event is InputEventMouseButton and event.pressed:
-		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-
 func _physics_process(delta: float) -> void:
 	boost_cooldown_timer = maxf(0.0, boost_cooldown_timer - delta)
 	boost_active_timer = maxf(0.0, boost_active_timer - delta)
+
+	var was_grounded := is_on_floor()
+
+	if controls_locked:
+		velocity.x = 0.0
+		velocity.z = 0.0
+
+		if not is_on_floor():
+			velocity.y -= gravity * delta
+		else:
+			velocity.y = 0.0
+
+		move_and_slide()
+
+		update_landing_sound(was_grounded)
+		update_footsteps(delta)
+		return
 
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -125,7 +155,6 @@ func _physics_process(delta: float) -> void:
 	var acceleration := 20.0
 	var deceleration := 25.0
 
-	# Preserve momentum while the launcher boost is active.
 	if boost_active_timer > 0.0:
 		acceleration = 5.0
 		deceleration = 3.5
@@ -146,24 +175,22 @@ func _physics_process(delta: float) -> void:
 		)
 
 	move_and_slide()
+
+	update_landing_sound(was_grounded)
+	update_footsteps(delta)
 	move_held_block()
-
-
-# Called by the gun.
 func apply_movement_boost(direction: Vector3, strength: float) -> void:
 	play_camera_shake()
 	if boost_cooldown_timer > 0.0:
 		return
 
 	direction = direction.normalized()
-
 	velocity += direction * strength
 
 	boost_cooldown_timer = boost_cooldown
 	boost_active_timer = boost_duration
 
 	animate_boost_fov()
-
 	print("RECOIL: ", direction)
 
 
@@ -265,9 +292,12 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body is RigidBody3D:
 		objects_in_portal.erase(body)
 		print("OBJECT LEFT PORTAL: ", body.name)
+
+
 func play_camera_shake() -> void:
 	shake_timer = shake_duration
-	
+
+
 func _process(delta: float) -> void:
 	if shake_timer > 0.0:
 		shake_timer -= delta
@@ -281,3 +311,38 @@ func _process(delta: float) -> void:
 		)
 	else:
 		camera.position = camera_original_position
+func update_footsteps(delta: float) -> void:
+	if not is_on_floor() or controls_locked:
+		footstep_timer = 0.0
+		if footstep_sound.playing:
+			footstep_sound.stop()
+		return
+
+	var horizontal_speed := Vector2(velocity.x, velocity.z).length()
+
+	if horizontal_speed > 0.5:
+		footstep_timer += delta
+
+		if footstep_timer >= footstep_interval:
+			footstep_timer = 0.0
+			footstep_sound.play()
+	else:
+		footstep_timer = 0.0
+		if footstep_sound.playing:
+			footstep_sound.stop()
+func update_landing_sound(was_grounded: bool) -> void:
+	if is_on_floor() and not was_grounded:
+		landing_sound.play()
+func take_damage(amount: float) -> void:
+	health = maxf(health - amount, 0.0)
+
+	if is_instance_valid(damage_effect):
+		damage_effect.play_damage_effect()
+
+	print("PLAYER HEALTH: ", health)
+
+	if health <= 0.0:
+		die()
+func die() -> void:
+	print("PLAYER DIED!")
+	get_tree().reload_current_scene()

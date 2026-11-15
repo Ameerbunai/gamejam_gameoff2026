@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://d3cofvur5ioor"]
+
+[ext_resource type="Script" uid="uid://gjpexpqugqgv" path="res://control.gd" id="1_xrgmn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_02vh1"]
+font_size = 64
+font_color = Color(0, 0, 0, 1)
+
+[node name="lobby" type="Node3D" unique_id=1911209869]
+
+[node name="Control" type="Control" parent="." unique_id=1652115677]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xrgmn")
+
+[node name="Background" type="ColorRect" parent="Control" unique_id=508713056]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.29219002, 0.29219005, 0.29219002, 1)
+
+[node name="Menu" type="VBoxContainer" parent="Control/Background" unique_id=12523054]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.5
+offset_top = -64.0
+offset_right = 45.5
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control/Background/Menu" unique_id=1913137946]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "mad world"
+label_settings = SubResource("LabelSettings_02vh1")
+
+[node name="PlayButton" type="Button" parent="Control/Background/Menu" unique_id=1793351231]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "play"
+
+[node name="LevelSelectbutton" type="Button" parent="Control/Background/Menu" unique_id=722709094]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "level pick"
+
+[node name="Quitbutton" type="Button" parent="Control/Background/Menu" unique_id=1050058257]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "quit"
+
+[node name="levelpicker" type="Panel" parent="Control/Background" unique_id=1454840126]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Background/levelpicker" unique_id=892662594]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -85.5
+offset_right = 32.5
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="level_1" type="Button" parent="Control/Background/levelpicker/VBoxContainer" unique_id=624320044]
+layout_mode = 2
+text = "level _1"
+
+[node name="level_2" type="Button" parent="Control/Background/levelpicker/VBoxContainer" unique_id=1665843830]
+layout_mode = 2
+text = "level 2"
+
+[node name="level_3" type="Button" parent="Control/Background/levelpicker/VBoxContainer" unique_id=154204082]
+layout_mode = 2
+text = "level 3"
+
+[node name="level_4" type="Button" parent="Control/Background/levelpicker/VBoxContainer" unique_id=1204381650]
+layout_mode = 2
+text = "level 4"
+
+[node name="Backbutton" type="Button" parent="Control/Background/levelpicker/VBoxContainer" unique_id=2018760803]
+layout_mode = 2
+text = "back"
+
+[connection signal="pressed" from="Control/Background/Menu/PlayButton" to="Control" method="_on_play_button_pressed"]
+[connection signal="pressed" from="Control/Background/Menu/LevelSelectbutton" to="Control" method="_on_level_selectbutton_pressed"]
+[connection signal="pressed" from="Control/Background/Menu/Quitbutton" to="Control" method="_on_quitbutton_pressed"]
+[connection signal="pressed" from="Control/Background/levelpicker/VBoxContainer/level_1" to="Control" method="_on_level_1_pressed"]
+[connection signal="pressed" from="Control/Background/levelpicker/VBoxContainer/level_2" to="Control" method="_on_level_2_pressed"]
+[connection signal="pressed" from="Control/Background/levelpicker/VBoxContainer/level_3" to="Control" method="_on_level_3_pressed"]
+[connection signal="pressed" from="Control/Background/levelpicker/VBoxContainer/level_4" to="Control" method="_on_level_4_pressed"]
+[connection signal="pressed" from="Control/Background/levelpicker/VBoxContainer/Backbutton" to="Control" method="_on_backbutton_pressed"]

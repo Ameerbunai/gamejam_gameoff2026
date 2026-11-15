@@ -1,5 +1,5 @@
-extends Area3D
 
+extends Area3D
 
 @export var video_player: VideoStreamPlayer
 @export var next_level: PackedScene
@@ -23,12 +23,16 @@ func _on_body_entered(body: Node3D) -> void:
 		return
 
 	transition_started = true
-	monitoring = false
+	set_deferred("monitoring", false)
 
 	print("PLAYER ENTERED EXIT!")
 
 	if not is_instance_valid(video_player):
 		push_error("VIDEO PLAYER NOT ASSIGNED!")
+		return
+
+	if video_player.stream == null:
+		push_error("VIDEO STREAM NOT ASSIGNED!")
 		return
 
 	video_player.visible = true
@@ -42,4 +46,9 @@ func _on_video_finished() -> void:
 		push_error("NEXT LEVEL NOT ASSIGNED!")
 		return
 
-	get_tree().change_scene_to_packed(next_level)
+	print("NEXT LEVEL: ", next_level.resource_path)
+
+	var error := get_tree().change_scene_to_packed(next_level)
+
+	if error != OK:
+		push_error("FAILED TO CHANGE SCENE: " + str(error))

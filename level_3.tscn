@@ -6,6 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://bg1puronb8gbe" path="res://sen/jumpingbad.tscn" id="5_7ds5r"]
 [ext_resource type="Script" uid="uid://b00an8yw8x32e" path="res://JumpPadControlButton.gd" id="6_6p2dc"]
 [ext_resource type="Script" uid="uid://bk7g4clurjmms" path="res://jump_pad_controller.gd" id="6_liaj6"]
+[ext_resource type="AudioStream" uid="uid://cc6mvny5vdte2" path="res://sound effects/moving-stone.mp3" id="7_7ds5r"]
+[ext_resource type="AudioStream" uid="uid://cut5b6e7he5pd" path="res://sound effects/comedy_pop_finger_in_mouth_001.mp3" id="8_liaj6"]
+[ext_resource type="AudioStream" uid="uid://co0wj8l8m1aeb" path="res://sound effects/angry-roblox.mp3" id="9_liaj6"]
+[ext_resource type="PackedScene" uid="uid://cdl3nwfin3utr" path="res://level_exit.tscn" id="10_kmy7e"]
+[ext_resource type="PackedScene" uid="uid://da83ta5f23je4" path="res://level_4.tscn" id="11_833wy"]
+[ext_resource type="Texture2D" uid="uid://ctgy3ttei7a4i" path="res://2.png" id="12_833wy"]
+[ext_resource type="PackedScene" uid="uid://uh7e52urpcy" path="res://voicetrigger.tscn" id="13_jvy75"]
+[ext_resource type="Script" uid="uid://dkm7ofhyh8wn8" path="res://area_3d.gd" id="13_keufu"]
+[ext_resource type="Script" uid="uid://ds4rhfp0c7sg7" path="res://submager.gd" id="14_g0tlw"]
+[ext_resource type="AudioStream" uid="uid://dlxnkemp3m3yw" path="res://level 3.mp3" id="14_keufu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_07pgl"]
 size = Vector3(0.12976074, 1.2890625, 2.001831)
@@ -20,6 +30,9 @@ size = Vector3(0.8477173, 1.3012695, 0.068603516)
 size = Vector3(0.515625, 0.12976742, 0.274292)
 
 [sub_resource type="BoxMesh" id="BoxMesh_02vh1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8rlb4"]
+albedo_color = Color(0.6378432, 0.6378432, 0.63784313, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ptrl1"]
 size = Vector3(1.3349609, 0.57006836, 1.8330078)
@@ -80,6 +93,27 @@ size = Vector3(1.1601563, 0.3400879, 2.2382813)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b60u5"]
 data = PackedVector3Array(-0.5801, 0.17, 1.1191, 0.5801, 0.17, 1.1191, -0.5801, -0.17, 1.1191, 0.5801, 0.17, 1.1191, 0.5801, -0.17, 1.1191, -0.5801, -0.17, 1.1191, 0.5801, 0.17, -1.1191, -0.5801, 0.17, -1.1191, 0.5801, -0.17, -1.1191, -0.5801, 0.17, -1.1191, -0.5801, -0.17, -1.1191, 0.5801, -0.17, -1.1191, 0.5801, 0.17, 1.1191, 0.5801, 0.17, -1.1191, 0.5801, -0.17, 1.1191, 0.5801, 0.17, -1.1191, 0.5801, -0.17, -1.1191, 0.5801, -0.17, 1.1191, -0.5801, 0.17, -1.1191, -0.5801, 0.17, 1.1191, -0.5801, -0.17, -1.1191, -0.5801, 0.17, 1.1191, -0.5801, -0.17, 1.1191, -0.5801, -0.17, -1.1191, 0.5801, 0.17, 1.1191, -0.5801, 0.17, 1.1191, 0.5801, 0.17, -1.1191, -0.5801, 0.17, 1.1191, -0.5801, 0.17, -1.1191, 0.5801, 0.17, -1.1191, -0.5801, -0.17, 1.1191, 0.5801, -0.17, 1.1191, -0.5801, -0.17, -1.1191, 0.5801, -0.17, 1.1191, 0.5801, -0.17, -1.1191, -0.5801, -0.17, -1.1191)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1um57"]
+size = Vector3(1, 1, 17.151367)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sxq20"]
+size = Vector3(5.263733, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rc2gj"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_joegk"]
+size = Vector3(17.30159, 1, 15.872589)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dbnv8"]
+
+[sub_resource type="Sky" id="Sky_07pgl"]
+sky_material = SubResource("ProceduralSkyMaterial_dbnv8")
+
+[sub_resource type="Environment" id="Environment_ptrl1"]
+background_mode = 2
+sky = SubResource("Sky_07pgl")
+
 [node name="level 3" type="Node3D" unique_id=1620751908]
 
 [node name="level_3_maybe" parent="." unique_id=847899736 instance=ExtResource("1_1fhj5")]
@@ -128,12 +162,17 @@ shape = SubResource("BoxShape3D_02vh1")
 transform = Transform3D(2.4553304, 0, 0, 0, 1.5327542, 0, 0, 0, 8.747347, -8.8441925, 5.816865, 0)
 use_collision = true
 mesh = SubResource("BoxMesh_02vh1")
+material = SubResource("StandardMaterial3D_8rlb4")
 
-[node name="player" parent="." unique_id=1760399875 instance=ExtResource("2_6p2dc")]
+[node name="player" parent="." unique_id=1760399875 groups=["player"] instance=ExtResource("2_6p2dc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.474815, 14.559738, 0)
 
 [node name="ageis" parent="." unique_id=312730686 instance=ExtResource("3_fmu3g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.108116, 13.791614, -2.428772)
+
+[node name="RigidBody3D" parent="ageis" index="0" unique_id=882170794]
+collision_layer = 3
+collision_mask = 3
 
 [node name="jumpingbad1" parent="." unique_id=2139694854 instance=ExtResource("5_7ds5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.031177, 0)
@@ -144,9 +183,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.006657, 14.995845, 0)
 [node name="jumpingbad2" parent="." unique_id=2004251038 instance=ExtResource("5_7ds5r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.77372, 14.482052, -6.0193815)
 
-[node name="JumpPadController" type="Node3D" parent="." unique_id=2084609788 node_paths=PackedStringArray("jump_pads")]
+[node name="JumpPadController" type="Node3D" parent="." unique_id=2084609788 node_paths=PackedStringArray("angry_sound", "jump_pads", "move_sound")]
 script = ExtResource("6_liaj6")
+angry_sound = NodePath("../anregy")
 jump_pads = [NodePath("../jumpingbad1"), NodePath("../jumpingbad"), NodePath("../jumpingbad2")]
+move_sound = NodePath("../move")
+anger_chance = 0.5
 shake_strength = 0.8
 
 [node name="right" type="StaticBody3D" parent="." unique_id=707095555 node_paths=PackedStringArray("controller")]
@@ -188,11 +230,12 @@ shape = SubResource("ConcavePolygonShape3D_7ds5r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28233337, -0.22812462, -0.014405489)
 shape = SubResource("BoxShape3D_ptrl1")
 
-[node name="switch" type="StaticBody3D" parent="." unique_id=1320046737 node_paths=PackedStringArray("controller")]
+[node name="switch" type="StaticBody3D" parent="." unique_id=1320046737 node_paths=PackedStringArray("controller", "switch_sound")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.599205, 13.681864, -4.9500294)
 script = ExtResource("6_6p2dc")
 action = 4
 controller = NodePath("../JumpPadController")
+switch_sound = NodePath("../pop")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="switch" unique_id=1910550151]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33043766, 0)
@@ -248,6 +291,94 @@ mesh = SubResource("BoxMesh_07pgl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.59002113, 0)
 shape = SubResource("ConcavePolygonShape3D_b60u5")
 
+[node name="move" type="AudioStreamPlayer3D" parent="." unique_id=934945280]
+stream = ExtResource("7_7ds5r")
+parameters/looping = true
+
+[node name="pop" type="AudioStreamPlayer3D" parent="." unique_id=225291643]
+stream = ExtResource("8_liaj6")
+
+[node name="anregy" type="AudioStreamPlayer3D" parent="." unique_id=1744511504]
+stream = ExtResource("9_liaj6")
+parameters/looping = true
+
+[node name="LevelExit" parent="." unique_id=1142119970 instance=ExtResource("10_kmy7e")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.25083876, 12.69558, 24.874897)
+next_level = ExtResource("11_833wy")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=610763244]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -17.412088, 15.736427, -7.8568287)
+texture = ExtResource("12_833wy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2052000536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.164413, 15.641164, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1563373946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6889133, -1.9115667, -0.14282227)
+shape = SubResource("BoxShape3D_1um57")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=836645255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.479412, 14.228504, 9.388037)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=1685563839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13192749, -0.11378956, -0.20709515)
+shape = SubResource("BoxShape3D_sxq20")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1020923177]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.479412, 14.228504, -9.350775)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=2135000178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13192749, -0.11378956, -0.20709515)
+shape = SubResource("BoxShape3D_sxq20")
+
+[node name="voicetrigger" parent="." unique_id=46938588 instance=ExtResource("13_jvy75")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.441269, 14.514892, -0.06410122)
+voice_audio = ExtResource("14_keufu")
+subtitle_text = "Hey, nice work back there! I hope that gun didn't make you mad, because in this test, things get a little spicy. You see the button in front of you. \"What does it do?\" you ask.
+Don't be silly, my friend—it moves the jump pads in front of you... There are instructions behind you; follow them to complete the test."
+
+[node name="CanvasLayer" type="CanvasLayer" parent="voicetrigger" unique_id=809044893 groups=["SubtitleManager"]]
+script = ExtResource("14_g0tlw")
+
+[node name="Label" type="Label" parent="voicetrigger/CanvasLayer" unique_id=885124352]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -230.0
+offset_right = 3.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+offset_transform_enabled = true
+label_settings = SubResource("LabelSettings_rc2gj")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Area3D" type="Area3D" parent="." unique_id=181834175 node_paths=PackedStringArray("player", "cubes") groups=["player"]]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+script = ExtResource("13_keufu")
+player = NodePath("../player/CharacterBody3D")
+cubes = [NodePath("../ageis/RigidBody3D")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1494147312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16474152, -0.6267325, 0.45491028)
+shape = SubResource("BoxShape3D_joegk")
+
+[node name="env" type="Node3D" parent="." unique_id=1132193730]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env" unique_id=1850242212]
+environment = SubResource("Environment_ptrl1")
+
 [connection signal="body_entered" from="right/DetectionArea" to="right" method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="right/DetectionArea" to="right" method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="left/DetectionArea" to="left" method="_on_detection_area_body_entered"]
@@ -256,3 +387,5 @@ shape = SubResource("ConcavePolygonShape3D_b60u5")
 [connection signal="body_exited" from="switch/DetectionArea" to="switch" method="_on_detection_area_body_exited"]
 
 [editable path="level_3_maybe"]
+[editable path="player"]
+[editable path="ageis"]

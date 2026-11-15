@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://nk40a2wnyb5h"]
 
 [ext_resource type="Script" uid="uid://0ivyil63er5b" path="res://scripts/playermove.gd" id="1_5p3o1"]
+[ext_resource type="Script" uid="uid://ehbf74oejy7y" path="res://scripts/control.gd" id="2_85y8y"]
+[ext_resource type="AudioStream" uid="uid://dtpp1gobv653k" path="res://sound effects/freesound_community-concrete-footsteps-1-6265.mp3" id="2_xvxwx"]
+[ext_resource type="AudioStream" uid="uid://de80mwt5yny8t" path="res://sound effects/freesound_community-land2-43790.mp3" id="3_5s26g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yi60d"]
 
@@ -21,5 +24,51 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52471304, 0)
 transform = Transform3D(1, 0, 0, 0, 0.97814775, -0.20791173, 0, 0.20791173, 0.97814775, 0, 0, 0)
 target_position = Vector3(0, -1, -5)
 
+[node name="CanvasLayer" type="CanvasLayer" parent="CharacterBody3D/Camera3D" unique_id=1009913584]
+
+[node name="Control" type="Control" parent="CharacterBody3D/Camera3D/CanvasLayer" unique_id=837954164]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_85y8y")
+
+[node name="Top" type="ColorRect" parent="CharacterBody3D/Camera3D/CanvasLayer/Control" unique_id=1403621140]
+layout_mode = 0
+offset_left = 638.0
+offset_top = 344.655
+offset_right = 642.0
+offset_bottom = 354.655
+
+[node name="bottom" type="ColorRect" parent="CharacterBody3D/Camera3D/CanvasLayer/Control" unique_id=1329302269]
+layout_mode = 0
+offset_left = 638.0
+offset_top = 364.0
+offset_right = 642.0
+offset_bottom = 374.0
+
+[node name="left" type="ColorRect" parent="CharacterBody3D/Camera3D/CanvasLayer/Control" unique_id=1884679562]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 358.0
+offset_right = 634.0
+offset_bottom = 362.0
+
+[node name="right" type="ColorRect" parent="CharacterBody3D/Camera3D/CanvasLayer/Control" unique_id=1890106152]
+layout_mode = 0
+offset_left = 646.0
+offset_top = 358.0
+offset_right = 656.0
+offset_bottom = 362.0
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=686052611]
 mesh = SubResource("CapsuleMesh_02vh1")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="CharacterBody3D" unique_id=941006946]
+stream = ExtResource("2_xvxwx")
+
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="CharacterBody3D" unique_id=1217794249]
+stream = ExtResource("3_5s26g")

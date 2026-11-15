@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dtx8wv3rhiq7k"
+path="res://.godot/imported/level 1 prat 2.mp3-34f7c74ac765bb21b1d247b2bcd24c6d.mp3str"
+
+[deps]
+
+source_file="res://level 1 prat 2.mp3"
+dest_files=["res://.godot/imported/level 1 prat 2.mp3-34f7c74ac765bb21b1d247b2bcd24c6d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

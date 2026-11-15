@@ -1,6 +1,6 @@
 
 extends Area3D
-
+signal dialogue_finished
 @export var voice_audio: AudioStream
 @export_multiline var subtitle_text: String = ""
 @export var play_once: bool = true
@@ -40,3 +40,5 @@ func _on_body_entered(body: Node3D) -> void:
 
 	if subtitle_manager:
 		subtitle_manager.hide_subtitle()
+
+	dialogue_finished.emit()

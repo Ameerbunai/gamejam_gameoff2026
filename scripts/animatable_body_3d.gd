@@ -4,7 +4,7 @@ extends AnimatableBody3D
 @export var animation_player: AnimationPlayer
 @export var door_collision: CollisionShape3D
 @export var open_animation: StringName = &"open_anmtons"
-
+@export var open_sound: AudioStreamPlayer3D
 var is_open: bool = false
 var is_closing: bool = false
 
@@ -46,7 +46,8 @@ func open_door() -> void:
 	is_open = true
 	door_collision.set_deferred("disabled", true)
 	animation_player.play(open_animation)
-
+	if is_instance_valid(open_sound):
+		open_sound.play()
 	print("PLAYING: ", open_animation)
 	if is_open or animation_player == null:
 		return

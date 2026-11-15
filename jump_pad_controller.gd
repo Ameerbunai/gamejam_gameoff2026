@@ -1,10 +1,10 @@
 
 extends Node3D
-
+@export var angry_sound: AudioStreamPlayer3D
 @export var jump_pads: Array[Area3D] = []
 @export var move_speed: float = 2.0
 @export var movement_axis: Vector3 = Vector3.RIGHT
-
+@export var move_sound: AudioStreamPlayer3D
 # Angry system settings
 @export var anger_check_interval: float = 10.0
 @export var anger_chance: float = 0.1
@@ -51,7 +51,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_angry_system(delta)
 	update_highlight_color()
-
+	update_movement_sound()
 	if jump_pads.is_empty():
 		return
 
@@ -169,6 +169,8 @@ func update_angry_system(delta: float) -> void:
 			randomize_angry_direction()
 
 			print("JUMP PAD ANGRY!")
+			if is_instance_valid(angry_sound):
+				angry_sound.play()
 
 	# Random angry movement.
 	elif is_angry:
@@ -193,6 +195,8 @@ func update_angry_system(delta: float) -> void:
 			cooldown_timer = 0.0
 
 			print("JUMP PAD CALMING DOWN!")
+			if is_instance_valid(angry_sound):
+				angry_sound.stop()
 
 	# Return to normal.
 	elif is_cooling_down:
@@ -341,3 +345,37 @@ func create_highlight_material() -> StandardMaterial3D:
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 
 	return material
+func update_movement_sound() -> void:
+	if not is_instance_valid(move_sound):
+		return
+
+	var should_play := false
+	var sound_position: Vector3
+
+	# Angry or warning movement.
+	if is_angry or is_shaking:
+		should_play = false
+
+	# Normal movement.
+	elif not is_cooling_down and not is_angry and not is_shaking:
+		if not jump_pads.is_empty() and active_pad_index < jump_pads.size():
+			var pad := jump_pads[active_pad_index]
+
+			if is_instance_valid(pad):
+				var direction := (
+					movement_axis.normalized() * move_direction
+					+ Vector3.UP * vertical_direction
+				)
+
+				if direction.length() > 0.0:
+					should_play = true
+					sound_position = pad.global_position
+
+	if should_play:
+		move_sound.global_position = sound_position
+
+		if not move_sound.playing:
+			move_sound.play()
+	else:
+		if move_sound.playing:
+			move_sound.stop()
